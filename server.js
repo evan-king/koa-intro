@@ -15,4 +15,5 @@ module.exports.startServer = function(config) {
     app.listen(config.port);
     console.log('LISTENING ON: ' + config.port);
     
+    return app;
 };
