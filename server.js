@@ -3,7 +3,8 @@
 const
     koa = require('koa'),
     ErrorHandler = require('middleware/http-error-handler'),
-    logRequests = require('middleware/log-requests');
+    logRequests = require('middleware/log-requests'),
+    routes = require('routes');
 
 module.exports.startServer = function(config) {
     
@@ -16,10 +17,8 @@ module.exports.startServer = function(config) {
     // Catch errors and respect response codes from HttpErrors
     app.use(ErrorHandler.middleware({pretty: config.debug}));
     
-    // Handle requests with 'Hello World' response
-    app.use(function*(next) {
-        this.body = 'Hello World';
-    });
+    // Split into route-specific functionality
+    app.use(routes.middleware());
     
     // Begin
     app.listen(config.port);
