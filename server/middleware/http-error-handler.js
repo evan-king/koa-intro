@@ -72,8 +72,7 @@ module.exports.middleware = function(options) {
         try {
             yield* next;
         } catch(ex) {
-            module.exports.handleError
-                .call(this, ex, null, options.debug);
+            module.exports.call(this, ex, null, options.debug);
 
             if(options.pretty) {
                 this.body = JSON.stringify(this.body, null, 2);
