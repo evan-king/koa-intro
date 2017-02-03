@@ -1,0 +1,23 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node start",
+    "test": "mocha --recursive",
+    "watch": "mocha --recursive --watch"
+  },
+  "dependencies": {
+    "app-module-path": "^2.2.0",
+    "co": "^4.6.0",
+    "co-compose": "^1.0.0",
+    "koa": "1.1.2"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "co-supertest": "0.0.10",
+    "mocha": "^1.21.4",
+    "mocha-generators": "^1.2.0",
+    "supertest": "^1.1.0"
+  }
+}
