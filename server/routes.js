@@ -2,6 +2,7 @@
 
 const
     Router = require('koa-router'),
+    bodyParser = require('koa-better-body'),
     HttpError = require('standard-http-error'),
     Controller = require('controllers/hello-controller');
 
@@ -15,8 +16,11 @@ module.exports.middleware = function() {
         yield* next;
     });
     
+    // define some more route-specific custom middleware
+    const body = bodyParser();
+    
     const audienceFromPost = function*(next) {
-        this.audience = this.request.body;
+        this.audience = this.request.fields.audience;
         yield* next;
     }
     
@@ -34,8 +38,9 @@ module.exports.middleware = function() {
     // Start listing routes (first fully matching path determines route)
     routes.get('/', Controller.home);
     routes.get('/hello/fail', Controller.fail);
+    routes.get('/hello/stream', Controller.helloStream);
     routes.get('/hello/:audience', validateAudience, Controller.hello);
-    routes.post('/hello', audienceFromPost, validateAudience, Controller.hello);
+    routes.post('/hello', body, audienceFromPost, validateAudience, Controller.hello);
     
     return routes.middleware();
 }

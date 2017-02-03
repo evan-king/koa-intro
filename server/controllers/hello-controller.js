@@ -7,6 +7,11 @@ exports.hello = function*() {
     this.body = greeter.greet();
 }
 
+exports.helloStream = function*() {
+    const greeter = Greeting('World');
+    this.body = yield* greeter.streamGreetings(10);
+}
+
 exports.home = function*() {
     this.redirect('/hello/World');
 }

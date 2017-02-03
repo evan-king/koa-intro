@@ -11,10 +11,10 @@ const
 
 console.log('bootstrapping env: ' + env);
 
-// startServer: config -> koa
+// startServer :: config -> koa
 const startServer = server.startServer.bind(null, config);
 
-// range: int -> [int]
+// range :: int -> [int]
 const range = length => Array.from(Array(length).keys());
 
 function startMultiCore(count, runner) {

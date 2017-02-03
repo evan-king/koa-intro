@@ -50,13 +50,17 @@ module.exports = function handleError(ex, statusCode, debug) {
 
     // Add any constructor-supplied details from HttpError instances
     if(ex instanceof HttpError) {
+        console.log('HTTP');
         const details = omit(ex, ['name', 'message', 'code']);
         if(Object.keys(details).length) this.body.errorDetails = details;
     } else if(this.status == 500) {
+        console.log('INTERNAL');
         this.body.errorMessage = "Internal server error";
         if(debug) {
             this.body.errorDetails = ex.valueOf();
         }
+    } else {
+        console.log('OTHER');
     }
 }
 
