@@ -14,8 +14,8 @@ describe('Empty application', function() {
         
         const response = yield client.get('/hello/world').expect(200);
         
-        expect(response.headers['content-type']).eql('text/plain; charset=utf-8');
-        expect(response.text).eql('Hello World');
+        expect(response.type).eql('application/json');
+        expect(response.body).eql({message: 'Hello World'});
     });
     
 });
