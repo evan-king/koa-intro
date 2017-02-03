@@ -2,34 +2,18 @@
 
 const
     koa = require('koa'),
-    ErrorHandler = require('middleware/http-error-handler'),
-    logRequests = require('middleware/log-requests');
+    base = require('middleware/base-stack');
 
 module.exports.startServer = function(config) {
     
     const app = koa();
     
-    // Log all requests
-    app.use(logRequests({clustered: config.processes > 1}));
-    if(config.debug) app.use(logRequests.timer);
-
-    // Catch errors and respect response codes from HttpErrors
-    app.use(ErrorHandler.middleware({pretty: config.debug}));
-    
-    // Let's always serve up JSON, in a naive manner
-    if(config.debug) app.use(function*(next) {
-        yield* next;
-        
-        // Don't do this in production, it's expensive
-        this.body = JSON.stringify(this.body, null, 2);
-    });
-    
-    app.use(function*(next) {
-        yield* next;
-        if(typeof this.body != 'object') {
-            this.body = {message: this.body};
-        }
-    });
+    // Use a standardized partial application stack from elsewhere
+    app.use(base({
+        clustered: config.processes > 1,
+        pretty: config.debug,
+        debug: config.debug
+    }));
     
     // Handle requests with 'Hello World' response
     app.use(function*(next) {
