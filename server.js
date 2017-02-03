@@ -10,6 +10,7 @@ module.exports.startServer = function(config) {
     
     // Log all requests
     app.use(logRequests({clustered: config.processes > 1}));
+    if(config.debug) app.use(logRequests.timer);
     
     // Handle requests with 'Hello World' response
     app.use(function*(next) {
