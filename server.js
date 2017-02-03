@@ -2,6 +2,7 @@
 
 const
     koa = require('koa'),
+    ErrorHandler = require('middleware/http-error-handler'),
     logRequests = require('middleware/log-requests');
 
 module.exports.startServer = function(config) {
@@ -10,6 +11,9 @@ module.exports.startServer = function(config) {
     
     // Log all requests
     app.use(logRequests({clustered: config.processes > 1}));
+
+    // Catch errors and respect response codes from HttpErrors
+    app.use(ErrorHandler.middleware(config.debug));
     
     // Handle requests with 'Hello World' response
     app.use(function*(next) {
@@ -20,4 +24,5 @@ module.exports.startServer = function(config) {
     app.listen(config.port);
     console.log('LISTENING ON: ' + config.port);
     
+    return app;
 };
